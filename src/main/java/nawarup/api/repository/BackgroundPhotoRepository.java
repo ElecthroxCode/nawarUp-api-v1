@@ -6,4 +6,8 @@ import nawarup.api.models.BackgroundPhoto;
 
 public interface BackgroundPhotoRepository extends JpaRepository<BackgroundPhoto, Long>{
 
+	BackgroundPhoto findByCompanyId(Long idCompany);
+
+	BackgroundPhoto findByCustomerId(Long id);
+
 }

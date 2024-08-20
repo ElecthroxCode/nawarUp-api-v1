@@ -38,15 +38,10 @@ public class Company {
 	private String email;
 	private String address;
 	private String description;
-	@OneToOne
-	@JoinColumn(name = "id_user")
-	private User user;
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "id_profile_photo")
-	private ProfilePhoto urlProfilePhoto;
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "id_background_photo")
-	private BackgroundPhoto urlBackPhoto;
+	private String username;
+	private String password;
+	
+	
 	@OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<BusinessService> allBusinessServices = new HashSet<>();
 	
@@ -57,7 +52,8 @@ public class Company {
 		this.email = companyDTO.email();
 		this.address = companyDTO.address();
 		this.description = companyDTO.description();
-		this.user = new User(companyDTO.user());
+		this.username = companyDTO.username();
+		this.password = companyDTO.password();
 	}
 	
 	public void updateCompany(CompanyUpdateDTO companyUpdateDTO) {
@@ -78,15 +74,6 @@ public class Company {
 		}
 	}
 	
-	public void addProfilePhoto(ProfilePhoto urlProfilePhoto) {
-		this.urlProfilePhoto = urlProfilePhoto;
-	}
-	public void addBackgroundPhoto(BackgroundPhoto urlBackgroundPhoto) {
-		this.urlBackPhoto = urlBackgroundPhoto;
-	}
-	public void addUser(User user) {
-		this.user = user;
-	}
 	public void offCompany() {
 		
 		
@@ -98,10 +85,6 @@ public class Company {
 		
 	}
 	
-	public void deleteProfilePhoto() {
-		this.urlProfilePhoto = null;
-	}
-	public void deleleteBackgroundPhoto() {
-		this.urlBackPhoto = null;
-	}
+	
+
 }

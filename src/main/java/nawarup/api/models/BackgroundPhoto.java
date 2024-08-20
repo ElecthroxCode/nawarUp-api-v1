@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -25,6 +27,12 @@ public class BackgroundPhoto {
 	@Column(name = "id_background_photo")
 	private Long id;
 	private String url;
+	@OneToOne
+	@JoinColumn(name = "id_company")
+	private Company company;
+	@OneToOne
+	@JoinColumn(name = "id_customer")
+	private Customer customer;
 	
 	public BackgroundPhoto(BackgroundPhotoDTO backgroundPhotoDTO) {
 		this.id = backgroundPhotoDTO.id();
@@ -35,7 +43,14 @@ public class BackgroundPhoto {
 		if(backgroundPhotoDTO.url() != null ) {
 			this.url = backgroundPhotoDTO.url();
 		}
-		
+	}
+	
+	public void addCompany(Company company) {
+		this.company = company;
+	}
+	
+	public void addCustomer(Customer customer) {
+		this.customer = customer;
 	}
 
 }

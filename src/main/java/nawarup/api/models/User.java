@@ -7,6 +7,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -28,6 +30,12 @@ public class User {
 	private String username;
 	private String password;
 	private String email;
+	@OneToOne
+	@JoinColumn(name = "id_company")
+	private Company company;
+	@OneToOne
+	@JoinColumn(name = "id_customer")
+	private Customer customer;
 	@Enumerated(EnumType.STRING)
 	@Column(name = "user_type")
 	private UserType userType;
@@ -39,6 +47,22 @@ public class User {
 		this.password = userDTO.password();
 		this.email = userDTO.email();
 		this.userType = userDTO.userType();
+	}
+	
+	public User(Company company) {
+		this.username = company.getUsername();
+		this.password = company.getPassword();
+		this.email = company.getEmail();
+		this.company = company;
+		this.userType = UserType.COMPANY;
+	}
+	public User(Customer customer) {
+		this.username = customer.getUsername();
+		this.password = customer.getPassword();
+		this.email = customer.getEmail();
+		this.customer = customer;
+		this.userType = UserType.CUSTOMER;
+	
 	}
 }
 

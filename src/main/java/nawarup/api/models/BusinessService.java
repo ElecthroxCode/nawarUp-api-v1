@@ -21,6 +21,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import nawarup.api.dto.BusinessServiceDTO;
+import nawarup.api.dto.BusinessServiceUpdateDTO;
 
 @Entity(name = "BusinessService")
 @Table(name = "services")
@@ -53,8 +54,20 @@ public class BusinessService {
 		this.name = businessServiceDTO.name();
 		this.description = businessServiceDTO.description();
 		this.basePrice = businessServiceDTO.basePrice();
-		
 						
+	}
+	
+	public void updateBusinessService(BusinessServiceUpdateDTO businessServiceUpdateDTO) {
+		if(businessServiceUpdateDTO.name() != null) {
+			this.name = businessServiceUpdateDTO.name();
+		}
+		if(businessServiceUpdateDTO.description() != null) {
+			this.description = businessServiceUpdateDTO.description();
+		}
+		if(businessServiceUpdateDTO.basePrice() != null) {
+			this.basePrice = businessServiceUpdateDTO.basePrice();
+		}
+		
 	}
 	
 	public void addCompany(Company company) {

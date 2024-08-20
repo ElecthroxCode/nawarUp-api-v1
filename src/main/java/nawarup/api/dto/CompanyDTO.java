@@ -10,13 +10,13 @@ public record CompanyDTO(
 		String email,
 		String address,
 		String description,
-		UserDTO user
+		String username,
+		String password
 		) {
 
 	public CompanyDTO(Company company) {
 		this(company.getId(), company.getName(), company.getManager(), company.getPhone(),
-				company.getEmail(), company.getAddress(), company.getAddress(), 
-				new UserDTO(company.getUser()));
+				company.getEmail(), company.getAddress(), company.getAddress(), company.getUsername(),company.getPassword());
 	}
 
 }

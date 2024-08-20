@@ -1,10 +1,13 @@
 package nawarup.api.models;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -25,6 +28,12 @@ public class ProfilePhoto {
 	@Column(name = "id_profile_photo")
 	private Long id;
 	private String url;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "id_company")
+	private Company company;
+	@OneToOne
+	@JoinColumn(name = "id_customer")
+	private Customer customer;
 	
 	public ProfilePhoto(ProfilePhotoDTO profilePhotoDTO) {
 		this.id = profilePhotoDTO.id();
@@ -35,7 +44,15 @@ public class ProfilePhoto {
 		if(profilePhotoDTO.url() != null) {
 			this.url = profilePhotoDTO.url();
 		}
-		
 	}
+	
+	public void addCompany(Company company) {
+		this.company = company;
+	}
+	
+	public void addCustomer(Customer customer) {
+		this.customer = customer;
+	}
+	
 
 }

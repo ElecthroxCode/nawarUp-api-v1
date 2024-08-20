@@ -19,6 +19,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import nawarup.api.dto.CustomerDTO;
+import nawarup.api.dto.CustomerUpdateDTO;
 
 @Entity(name = "Customer")
 @Table(name = "customers")
@@ -36,26 +37,39 @@ public class Customer {
 	private String email;
 	private String address;
 	private String description;
-	@OneToOne
-	@JoinColumn(name = "id_user")
-	private User user;
-	@OneToOne
-	@JoinColumn(name = "id_profile_photo")
-	private ProfilePhoto urlProfilePhoto;
-	@OneToOne
-	@JoinColumn(name = "id_background_photo")
-	private BackgroundPhoto urlBackPhoto;
+	private String username;
+	private String password;
+	
 	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<Reservation> reservation = new HashSet<>();
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	private Set<FavoriteTopics> allFavoriteTopics = new HashSet<>();
 	
 	public Customer(CustomerDTO customerDTO) {
 		this.name = customerDTO.name();
 		this.phone = customerDTO.phone();
 		this.email = customerDTO.email();
 		this.address = customerDTO.address();
-		this.user = new User(customerDTO.userDTO());
+		this.description = customerDTO.description();
+		this.username = customerDTO.username();
+		this.password = customerDTO.password();
+	}
+	
+	public void updateCustomer(CustomerUpdateDTO customerUpdateDTO) {
+		if(customerUpdateDTO.name() != null) {
+			this.name = customerUpdateDTO.name();
+		}
+		if(customerUpdateDTO.phone() != null) {
+			this.phone = customerUpdateDTO.phone();
+		}
+		if(customerUpdateDTO.address() != null) {
+			this.address = customerUpdateDTO.address();
+		}
+		if(customerUpdateDTO.description() != null) {
+			this.description = customerUpdateDTO.description();
+		}
+	}
+	
+	public void offCustomer() {
+		
 	}
 	
 }

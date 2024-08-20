@@ -14,7 +14,8 @@ public record BusinessServiceDTO(
 		) {
 
 	public BusinessServiceDTO(BusinessService businessService) {
-		this(businessService.getId(), businessService.getName(), businessService.getDescription(), businessService.getBasePrice());
+		this(businessService.getId(), businessService.getName(), businessService.getDescription(),
+				businessService.getBasePrice());
 	}
 
 }
