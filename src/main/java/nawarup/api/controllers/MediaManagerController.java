@@ -4,6 +4,7 @@ import java.net.URI;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +16,8 @@ import nawarup.api.dto.BackgroundPhotoDTO;
 import nawarup.api.dto.BackgroundPhotoRespCompanyDTO;
 import nawarup.api.dto.BackgroundPhotoRespCustomerDTO;
 import nawarup.api.dto.BackgroundPhotoResponseDTO;
+import nawarup.api.dto.BusinessServiceMediaDTO;
+import nawarup.api.dto.BusinessServiceMediaResponseDTO;
 import nawarup.api.dto.ProfilePhotoDTO;
 import nawarup.api.dto.ProfilePhotoRespCompanyDTO;
 import nawarup.api.dto.ProfilePhotoRespCustomerDTO;
@@ -85,12 +88,11 @@ public class MediaManagerController {
 		return ResponseEntity.created(url).body(profilePhotoResponseDTO);
 	}
 	
-	
 	@PostMapping("/{idCustomer}/customer-background-replace")
 	public ResponseEntity<BackgroundPhotoResponseDTO> replaceBackgroundPhotoToCustomer(@PathVariable Long idCustomer,
 			@RequestBody BackgroundPhotoDTO backgroundPhotoDTO, UriComponentsBuilder uriComponentsBuilder){
 		
-		BackgroundPhotoResponseDTO backgroundPhotoResponseDTO = mediaService.replaceBackgroundPhotoToCompany(idCustomer, backgroundPhotoDTO);
+		BackgroundPhotoResponseDTO backgroundPhotoResponseDTO = mediaService.replaceBackgroundPhotoToCustomer(idCustomer, backgroundPhotoDTO);
 		URI url = uriComponentsBuilder.path("/photo-background/{id}")
 				.buildAndExpand(backgroundPhotoResponseDTO.id()).toUri();
 		return ResponseEntity.created(url).body(backgroundPhotoResponseDTO);
@@ -116,9 +118,21 @@ public class MediaManagerController {
 		return ResponseEntity.created(url).body(backgroundPhotoRespCustomerDTO);
 	}
 	
+	@PostMapping("/{idBusinessService}/services")
+	public ResponseEntity<BusinessServiceMediaResponseDTO> replaceBusinessServiceMediaToBusinessService(@PathVariable Long idBusinessService,
+			@RequestBody BusinessServiceMediaDTO businessServiceMediaDTO, UriComponentsBuilder uriComponentsBuilder){
+		
+		BusinessServiceMediaResponseDTO businessServiceMediaResponseDTO = 
+				mediaService.replaceBusinessServiceMediaToBusinessService(idBusinessService, businessServiceMediaDTO);
+		URI url = uriComponentsBuilder.path("/media-service/{id}").buildAndExpand(businessServiceMediaResponseDTO.id()).toUri();
+		return ResponseEntity.created(url).body(businessServiceMediaResponseDTO);
+	}
 	
-	
-	
+	@DeleteMapping("/remove-service/{idBusinessServiceMedia}")
+	public ResponseEntity<Void> deleteBusinessServiceMediaToBusinessService(@PathVariable Long idBusinessServiceMedia){
+		mediaService.deleteBusinessServiceMediaToBusinessService(idBusinessServiceMedia);
+		return ResponseEntity.noContent().build();
+	}
 	
 	
 }

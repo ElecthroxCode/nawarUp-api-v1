@@ -1,6 +1,7 @@
 package nawarup.api.models;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 
 import jakarta.persistence.Column;
@@ -17,6 +18,7 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import nawarup.api.dto.ReservationDTO;
 
 @Entity(name = "Reservation")
 @Table(name = "reservations")
@@ -43,6 +45,37 @@ public class Reservation {
 	@JoinColumn(name = "id_customer")
 	private Customer customer;
 	
-
-
+	public Reservation(ReservationDTO reservationDTO) {
+		this.id = reservationDTO.id();
+		this.personServed = reservationDTO.personServed();
+		this.details = reservationDTO.details();
+		this.date = reservationDTO.date();
+	
+	}
+	 //toma en cuenta un factor y el tipo de diseño para modificar el precio final.
+	public void fullPayment(double factorForPrice, String designType) {
+		BigDecimal factor;
+		if(designType.equals("1")) {
+			factor = new BigDecimal(Double.toString(factorForPrice));
+			this.totalPayment = this.totalPayment.multiply(factor).setScale(3, RoundingMode.HALF_UP);
+		}
+		//tiene en cuenta la cantidad de persona a atender (valor del servicio * cantidad de persona)
+		if(this.personServed > 1) {
+			factor = new BigDecimal(Double.toString(this.personServed));
+			this.totalPayment = this.totalPayment.multiply(factor).setScale(3, RoundingMode.HALF_UP);
+		}
+	}
+	
+	public void reservationAddValues(String addDetails, BigDecimal totalPayment) {
+		this.details = String.format("Servicio: %s.%n%s", addDetails, this.details);
+		this.totalPayment = totalPayment;
+	}
+	
+	public void addCustomer(Customer customer) {
+		this.customer = customer;
+	}
+	
+	public void addBusinessService(BusinessService businessService) {
+		this.businessService = businessService;
+	}
 }

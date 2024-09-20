@@ -44,22 +44,27 @@ public class CustomerController {
 		return ResponseEntity.ok(customerService.updateCustomer(customerUpdateDTO));
 	}
 	
-	@PostMapping("/topics/{id}")
-	public ResponseEntity<FavoriteTopicsResponseDTO> addFavoriteTopicsToCustomer(@PathVariable Long idCompany, @RequestBody FavoriteTopicsDTO favoriteTopicsDTO,
+	@PostMapping("/topics/{idCustomer}")
+	public ResponseEntity<FavoriteTopicsResponseDTO> addFavoriteTopicsToCustomer(@PathVariable Long idCustomer, @RequestBody FavoriteTopicsDTO favoriteTopicsDTO,
 			UriComponentsBuilder uriComponentsBuilder){
 		
-		FavoriteTopicsResponseDTO favoriteTopicsResponseDTO = customerService.addFavoriteTopicsToCustomer(idCompany, favoriteTopicsDTO);
+		FavoriteTopicsResponseDTO favoriteTopicsResponseDTO = customerService.addFavoriteTopicsToCustomer(idCustomer, favoriteTopicsDTO);
 		URI url = uriComponentsBuilder.path("/topics-customer/{id}").buildAndExpand(favoriteTopicsResponseDTO.id()).toUri();
 		return ResponseEntity.created(url).body(favoriteTopicsResponseDTO);
 	}
 	
 	@DeleteMapping("/idCustomer")
-	public ResponseEntity deleteCustomer(@PathVariable Long idCustomer){
+	public ResponseEntity<Void> deleteCustomer(@PathVariable Long idCustomer){
 		
 		customerService.deleteCustomer(idCustomer);
 		return ResponseEntity.noContent().build();
 	}
 	
+	@DeleteMapping("/topics/remove/{idFavoriteTopics}")
+	public ResponseEntity<Void> deleteFavoriteTopicsToCustomer(@PathVariable Long idFavoriteTopics){
+		customerService.deleteFavoriteTopicsToCustomer(idFavoriteTopics);
+		return ResponseEntity.noContent().build();
+	}
 	
 	
 }

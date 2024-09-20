@@ -45,9 +45,6 @@ public class BusinessService {
 	private Company company;
 	@OneToMany(mappedBy = "businessService", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<Reservation> reservation = new HashSet<>();
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "id_service")
-	private List<BusinessServiceMedia> allBusinessServiceMedia = new ArrayList<>();
 	
 	public BusinessService(BusinessServiceDTO businessServiceDTO) {
 		this.id = businessServiceDTO.id();

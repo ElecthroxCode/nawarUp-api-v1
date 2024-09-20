@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import nawarup.api.dto.CustomerDTO;
 import nawarup.api.dto.CustomerResponseDTO;
@@ -83,14 +84,22 @@ public class CustomerServiceImpl implements CustomerService{
 	@Override
 	public FavoriteTopicsResponseDTO addFavoriteTopicsToCustomer(Long idCustomer, FavoriteTopicsDTO favoriteTopicsDTO) {
 		
-		Customer customer = getCustomer(idCustomer);
-		if(customer == null) {
-			throw new IllegalArgumentException("This customer is null. Cannot be null.");
+		if(!customerRepository.existsById(idCustomer)) {
+			throw new EntityNotFoundException("This idCustomer is null. Cannot be null.");
 		}
+		Customer customer = getCustomer(idCustomer);
 		FavoriteTopics favoriteTopics = new FavoriteTopics(favoriteTopicsDTO);
 		favoriteTopics.addCustomer(customer);
 		favoriteTopicsRepository.save(favoriteTopics);
 		return new FavoriteTopicsResponseDTO(favoriteTopics);
+	}
+
+	@Override
+	public void deleteFavoriteTopicsToCustomer(Long idFavoriteTopics) {
+		if(!favoriteTopicsRepository.existsById(idFavoriteTopics)) {
+			throw new EntityNotFoundException("This idFavoriteTopics not exist.");
+		}
+		favoriteTopicsRepository.deleteById(idFavoriteTopics);
 	}
 	
 	

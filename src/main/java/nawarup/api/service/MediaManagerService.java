@@ -4,6 +4,8 @@ import nawarup.api.dto.BackgroundPhotoDTO;
 import nawarup.api.dto.BackgroundPhotoRespCompanyDTO;
 import nawarup.api.dto.BackgroundPhotoRespCustomerDTO;
 import nawarup.api.dto.BackgroundPhotoResponseDTO;
+import nawarup.api.dto.BusinessServiceMediaDTO;
+import nawarup.api.dto.BusinessServiceMediaResponseDTO;
 import nawarup.api.dto.ProfilePhotoDTO;
 import nawarup.api.dto.ProfilePhotoRespCompanyDTO;
 import nawarup.api.dto.ProfilePhotoRespCustomerDTO;
@@ -20,6 +22,7 @@ public interface MediaManagerService {
 	BackgroundPhotoResponseDTO replaceBackgroundPhotoToCustomer(Long idCustomer, BackgroundPhotoDTO backgroundPhotoDTO);
 	ProfilePhotoResponseDTO replaceProfilePhotoToCompany(Long idCompany, ProfilePhotoDTO profilePhotoDTO);
 	BackgroundPhotoResponseDTO replaceBackgroundPhotoToCompany(Long idCompany, BackgroundPhotoDTO backgroundPhotoDTO);
-	
+	BusinessServiceMediaResponseDTO replaceBusinessServiceMediaToBusinessService(Long idBusinessService, BusinessServiceMediaDTO businessServiceMediaDTO);
+	void deleteBusinessServiceMediaToBusinessService(Long idBusinessServiceMedia);
 }
 	

@@ -3,22 +3,29 @@ package nawarup.api.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import jakarta.persistence.EntityNotFoundException;
 import nawarup.api.dto.BackgroundPhotoDTO;
 import nawarup.api.dto.BackgroundPhotoRespCompanyDTO;
 import nawarup.api.dto.BackgroundPhotoRespCustomerDTO;
 import nawarup.api.dto.BackgroundPhotoResponseDTO;
+import nawarup.api.dto.BusinessServiceMediaResponseDTO;
 import nawarup.api.dto.ProfilePhotoDTO;
 import nawarup.api.dto.ProfilePhotoRespCompanyDTO;
 import nawarup.api.dto.ProfilePhotoRespCustomerDTO;
 import nawarup.api.dto.ProfilePhotoResponseDTO;
 import nawarup.api.models.BackgroundPhoto;
+import nawarup.api.models.BusinessService;
+import nawarup.api.models.BusinessServiceMedia;
 import nawarup.api.models.Company;
 import nawarup.api.models.Customer;
 import nawarup.api.models.ProfilePhoto;
 import nawarup.api.repository.BackgroundPhotoRepository;
+import nawarup.api.repository.BusinessServiceMediaRepository;
+import nawarup.api.repository.BusinessServiceRepository;
 import nawarup.api.repository.CompanyRepository;
 import nawarup.api.repository.CustomerRepository;
 import nawarup.api.repository.ProfilePhotoRepository;
+import nawarup.api.dto.BusinessServiceMediaDTO;
 import nawarup.api.service.MediaManagerService;
 
 @Service
@@ -28,18 +35,23 @@ public class MediaManagerServiceImpl implements MediaManagerService{
 	private final BackgroundPhotoRepository backgroundPhotoRepository;
 	private final CompanyRepository companyRepository;
 	private final CustomerRepository customerRepository;
+	private final BusinessServiceRepository businessServiceRepository;
+	private final BusinessServiceMediaRepository businessServiceMediaRepository;
 	private ProfilePhoto profilePhoto;
 	private BackgroundPhoto backgroundPhoto;
 	
 	@Autowired
 	public MediaManagerServiceImpl(ProfilePhotoRepository profilePhotoRepository,
 			BackgroundPhotoRepository backgroundPhotoRepository, CompanyRepository companyRepository,
-			CustomerRepository customerRepository) {
+			CustomerRepository customerRepository, BusinessServiceMediaRepository businessServiceMediaRepository,
+			BusinessServiceRepository businessServiceRepository) {
 		
 		this.profilePhotoRepository = profilePhotoRepository;
 		this.backgroundPhotoRepository = backgroundPhotoRepository;
 		this.companyRepository = companyRepository;
 		this.customerRepository = customerRepository;
+		this.businessServiceMediaRepository = businessServiceMediaRepository;
+		this.businessServiceRepository = businessServiceRepository;
 	}
 	
 	@Override
@@ -176,6 +188,34 @@ public class MediaManagerServiceImpl implements MediaManagerService{
 		backgroundPhoto.addCompany(company);
 		backgroundPhotoRepository.save(backgroundPhoto);
 		return new BackgroundPhotoResponseDTO(backgroundPhoto.getId(), backgroundPhoto.getUrl());
+	}
+
+	
+	@Override
+	public BusinessServiceMediaResponseDTO replaceBusinessServiceMediaToBusinessService(Long idBusinessService,
+			BusinessServiceMediaDTO businessServiceMediaDTO) {
+		
+		if(businessServiceMediaDTO == null) {
+			throw new IllegalArgumentException("This BusinessServiceMedia is null. Cannot be null.");
+		}
+		BusinessService businessService = businessServiceRepository.getReferenceById(idBusinessService);
+		if(businessService == null) {
+			throw new IllegalArgumentException("This BusinessService is null. Cannot be null.");
+		}
+		BusinessServiceMedia businessServiceMedia = new BusinessServiceMedia(businessServiceMediaDTO);
+
+		businessServiceMedia.addBusinessService(businessService);
+		businessServiceMediaRepository.save(businessServiceMedia);
+		return new BusinessServiceMediaResponseDTO(businessServiceMedia);
+	}
+
+	@Override
+	public void deleteBusinessServiceMediaToBusinessService(Long idBusinessServiceMedia) {
+		if(!businessServiceMediaRepository.existsById(idBusinessServiceMedia)) {
+			throw new EntityNotFoundException("BusinessServiceMedia with ID " + idBusinessServiceMedia +" not found.");
+		}
+	    businessServiceMediaRepository.deleteById(idBusinessServiceMedia);
+	    System.out.println("Se ha borrado la entidad con ID " + idBusinessServiceMedia);
 	}
 
 

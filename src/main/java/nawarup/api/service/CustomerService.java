@@ -14,4 +14,5 @@ public interface CustomerService {
 	public Customer getCustomer(Long idCustomer);
 	public void deleteCustomer(Long idCustomer);
 	public FavoriteTopicsResponseDTO addFavoriteTopicsToCustomer(Long idCustomer, FavoriteTopicsDTO favoriteTopicsDTO);
+	void deleteFavoriteTopicsToCustomer(Long idFavoriteTopics);
 }
