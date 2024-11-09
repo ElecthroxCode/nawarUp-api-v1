@@ -1,13 +1,12 @@
 package nawarup.api.repository;
 
+import nawarup.api.models.BackgroundPhoto;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import nawarup.api.models.BackgroundPhoto;
+public interface BackgroundPhotoRepository extends JpaRepository<BackgroundPhoto, Long> {
 
-public interface BackgroundPhotoRepository extends JpaRepository<BackgroundPhoto, Long>{
+    BackgroundPhoto findByCompanyId(Long idCompany);
 
-	BackgroundPhoto findByCompanyId(Long idCompany);
-
-	BackgroundPhoto findByCustomerId(Long id);
+    BackgroundPhoto findByCustomerId(Long id);
 
 }

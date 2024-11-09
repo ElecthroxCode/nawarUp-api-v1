@@ -1,4 +1,12 @@
 
+CREATE TABLE users(
+	id_user BIGINT AUTO_INCREMENT PRIMARY KEY,
+	username VARCHAR(50) NOT NULL UNIQUE,
+	password VARCHAR(100) NOT NULL,
+	email VARCHAR(100) NOT NULL UNIQUE,
+	user_type VARCHAR(50) NOT NULL
+);
+
 CREATE TABLE companies(
 	id_company BIGINT AUTO_INCREMENT PRIMARY KEY,
 	name VARCHAR(100) NOT NULL,
@@ -7,8 +15,10 @@ CREATE TABLE companies(
 	email VARCHAR(100) NOT NULL UNIQUE,
 	address VARCHAR(255) NOT NULL,
 	description TEXT NOT NULL,
+	user_id BIGINT NOT NULL,
 	username VARCHAR(50) NOT NULL,
-	password VARCHAR(100) NOT NULL
+	password VARCHAR(100) NOT NULL,
+	FOREIGN KEY (user_id) REFERENCES users (id_user) ON DELETE CASCADE
 );
 
 CREATE TABLE customers(
@@ -18,9 +28,10 @@ CREATE TABLE customers(
 	email VARCHAR(100) NOT NULL UNIQUE,
 	address VARCHAR(255) NOT NULL,
 	description TEXT,
+	user_id BIGINT NOT NULL,
 	username VARCHAR(50),
-	password VARCHAR(100)
-	
+	password VARCHAR(100),
+    FOREIGN KEY (user_id) REFERENCES users(id_user) ON DELETE CASCADE
 );
 
 CREATE TABLE favorite_topics(
@@ -31,17 +42,6 @@ CREATE TABLE favorite_topics(
 );
 
 
-CREATE TABLE users(
-	id_user BIGINT AUTO_INCREMENT PRIMARY KEY,
-	username VARCHAR(50) NOT NULL UNIQUE,
-	password VARCHAR(100) NOT NULL,
-	email VARCHAR(100) NOT NULL UNIQUE,
-	user_type VARCHAR(50) NOT NULL,
-	id_company BIGINT,
-	id_customer BIGINT,
-	FOREIGN KEY (id_company) REFERENCES companies(id_company) ON DELETE CASCADE,
-	FOREIGN KEY (id_customer) REFERENCES customers(id_customer) ON DELETE CASCADE
-);
 
 CREATE TABLE profile_photos(
 	id_profile_photo BIGINT AUTO_INCREMENT PRIMARY KEY,

@@ -1,13 +1,6 @@
 package nawarup.api.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -21,37 +14,37 @@ import nawarup.api.dto.BackgroundPhotoDTO;
 @Getter
 @EqualsAndHashCode
 public class BackgroundPhoto {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_background_photo")
-	private Long id;
-	private String url;
-	@OneToOne
-	@JoinColumn(name = "id_company")
-	private Company company;
-	@OneToOne
-	@JoinColumn(name = "id_customer")
-	private Customer customer;
-	
-	public BackgroundPhoto(BackgroundPhotoDTO backgroundPhotoDTO) {
-		this.id = backgroundPhotoDTO.id();
-		this.url = backgroundPhotoDTO.url();
-	}
 
-	public void updateBackgroundPhoto(BackgroundPhotoDTO backgroundPhotoDTO) {
-		if(backgroundPhotoDTO.url() != null ) {
-			this.url = backgroundPhotoDTO.url();
-		}
-	}
-	
-	public void addCompany(Company company) {
-		this.company = company;
-	}
-	
-	public void addCustomer(Customer customer) {
-		this.customer = customer;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_background_photo")
+    private Long id;
+    private String url;
+    @OneToOne
+    @JoinColumn(name = "id_company")
+    private Company company;
+    @OneToOne
+    @JoinColumn(name = "id_customer")
+    private Customer customer;
+
+    public BackgroundPhoto(BackgroundPhotoDTO backgroundPhotoDTO) {
+        this.id = backgroundPhotoDTO.id();
+        this.url = backgroundPhotoDTO.url();
+    }
+
+    public void updateBackgroundPhoto(BackgroundPhotoDTO backgroundPhotoDTO) {
+        if (backgroundPhotoDTO.url() != null) {
+            this.url = backgroundPhotoDTO.url();
+        }
+    }
+
+    public void addCompany(Company company) {
+        this.company = company;
+    }
+
+    public void addCustomer(Customer customer) {
+        this.customer = customer;
+    }
 
 }
 
